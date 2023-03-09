@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
 </script>
 
-<template class="container">
+<template>
   <RouterView />
 </template>
 
-<style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-</style>
+<style></style>

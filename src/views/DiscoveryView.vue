@@ -20,7 +20,6 @@ onBeforeMount(() => {
   if (arrayFilter.find((e) => e.id == 0)) arrayFilter = listTask
   console.log({ arrayFilter })
   listOfTopics()
-
 })
 onMounted(() => {})
 
@@ -45,26 +44,6 @@ const filterTopic = (): catalogInterface[] => {
   return arrayFilter
 }
 
-const sortByStarsAsc = () => {
-  if (listTask.length == 0) return
-  listTask.sort((a, b) => a.stars + b.stars)
-  console.log(listTask)
-}
-
-const sortByStarsDesc = () => {
-  if (listTask.length == 0) return
-  listTask.sort((a, b) => a.stars - b.stars)
-  console.log(listTask)
-}
-
-const bookmarkCheck = () => {
-  if (listTask.length == 0) return
-  listTask.map((e, index) => {
-    if (index == 0) e.bookmark = !e.bookmark
-  })
-  console.log(listTask)
-}
-
 const listOfTopics = (): string[] => {
   listTask.forEach((element) => {
     listTopic.length == 0 && listTopic.push(element.topic)
@@ -76,17 +55,14 @@ const listOfTopics = (): string[] => {
 
 <template>
   <div class="container">
-    <div class="about">
-      <NavBarComponent />
+    <div>
+      <NavBarComponent :value="1" />
     </div>
     <div>
-      <input type="text" name="" id="" placeholder="Name Task" v-model="catalogModel.title" />
-      <button @click="filterTopic()">sort topic</button>
-      <button @click="sortByStarsAsc()">sort Stars</button>
-      <button @click="sortByStarsDesc()">sort Stars Desc</button>
-      <button @click="bookmarkCheck()">bookmark check</button>
-      <button v-if="edit">Editar</button>
-      <button v-else @click="updateList()">Save</button>
+      <v-text-field v-model="catalogModel.title" label="Name Task"></v-text-field>
+      <v-btn @click="filterTopic()">sort topic</v-btn>      
+      <v-btn v-if="edit">Editar</v-btn>
+      <v-btn v-else @click="updateList()">Save</v-btn>
     </div>
     <div>
       <HelloWorld :msg="listTopic" :list="arrayFilter" />
