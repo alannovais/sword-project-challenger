@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
+import router from '@/router'
+import type { userInterface } from '@/interfaces/user'
 const props = defineProps<{
   value: number
 }>()
@@ -8,6 +10,18 @@ let value: number = 1
 onMounted(() => {
   value = props.value
 })
+
+const logout = () => {
+  let arrayToUpdate: userInterface[] = []
+  let newArray: userInterface[] = []
+  arrayToUpdate = JSON.parse(localStorage.getItem('user'))
+  arrayToUpdate.forEach((element) => {
+    if (element.active == true)  element.active = !element.active
+    newArray.push(element)
+  })
+  localStorage.setItem('user', JSON.stringify(newArray))
+  return router.push({ path: '/' })
+}
 </script>
 
 <template>
@@ -37,7 +51,7 @@ onMounted(() => {
           </div>
 
           <div>
-            <v-btn> Logout </v-btn>
+            <v-btn @click="logout"> Logout </v-btn>
           </div>
         </div>
       </v-bottom-navigation>

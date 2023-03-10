@@ -11,75 +11,75 @@
       "id": 2,
       "title": "LifeCycles",
       "bookmark": false,
-      "topic": "vue",
+      "topic": "Vue",
       "stars": 5
     },
     {
       "id": 3,
-      "title": "Manipulação de String",
+      "title": "String manipulation",
       "bookmark": false,
       "topic": "Javascript",
       "stars": 3
     },
     {
       "id": 4,
-      "title": "Interpolação",
+      "title": "Interpolation",
       "bookmark": false,
-      "topic": "vue",
+      "topic": "Vue",
       "stars": 4
     },
     {
       "id": 5,
-      "title": "Estrutura de repetição",
+      "title": "Loop structure",
       "bookmark": false,
       "topic": "Javascript",
       "stars": 4
     },
     {
       "id": 6,
-      "title": "Operador Ternário",
+      "title": "Ternary operator",
       "bookmark": false,
       "topic": "Javascript",
       "stars": 5
     },
     {
       "id": 7,
-      "title": "test",
+      "title": "Computed, Methods and Watch",
       "bookmark": false,
-      "topic": "vue",
+      "topic": "Vue",
       "stars": 5
     },
     {
       "id": 8,
-      "title": "test",
+      "title": "JSX",
       "bookmark": false,
-      "topic": "react",
+      "topic": "React",
       "stars": 5
     },
     {
       "id": 9,
-      "title": "test",
+      "title": "Primitive types",
       "bookmark": false,
-      "topic": "typescript",
+      "topic": "Typescript",
       "stars": 5
     },
     {
       "id": 10,
-      "title": "test",
+      "title": "Variables",
       "bookmark": false,
       "topic": "CSS",
       "stars": 5
     },
     {
       "id": 11,
-      "title": "test",
+      "title": "IA",
       "bookmark": false,
-      "topic": "GO",
+      "topic": "Python",
       "stars": 5
     },
     {
         "id": 12,
-        "title": "test",
+        "title": "Micro services",
         "bookmark": false,
         "topic": "Node",
         "stars": 5

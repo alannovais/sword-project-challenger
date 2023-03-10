@@ -1,52 +1,75 @@
 <script setup lang="ts">
 import type { catalogInterface } from '@/interfaces/catalog'
-import { reactive } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 
 let props = defineProps<{
-  msg: string[]
+  topics: string[]
   list: catalogInterface[]
 }>()
 let dlay: number = 50
-let arrayBookmarks: catalogInterface[] = reactive([])
-let arrayEmpity: catalogInterface[] = reactive([])
+let arrayEmpity: catalogInterface[] = []
+let arrayBookmarks: catalogInterface[] = ref([])
+let filterTopicsSelected: string[] = ref([])
+let orderDesc: boolean = ref(false)
 
-const filter = (list: catalogInterface[], topic: string): catalogInterface[] => {
-  return list.filter((e) => e.topic == topic)
+const arrayList = computed(() => {
+  return props.list
+})
+
+const chipTopics = computed(() => {
+  return props.topics
+})
+
+const arrayTopics = computed(() => {
+  let array = []
+  array = chipTopics.value.filter((e) => {
+    if (!filterTopicsSelected.value.includes(e)) return e
+  })
+  return array
+})
+
+const checkBookmaks = (catalog: catalogInterface): void => {
+  catalog.bookmark = !catalog.bookmark
+  arrayEmpity.length == 0 && arrayEmpity.push(catalog)
+  if (catalog.bookmark && !arrayEmpity.some((e) => e.id == catalog.id)) arrayEmpity.push(catalog)
+  arrayBookmarks.value = arrayEmpity.filter((e) => e.bookmark == true)
 }
 
-const checkBookmaks = (list: catalogInterface): catalogInterface[] => {
-  list.bookmark = !list.bookmark
-  list.bookmark && arrayBookmarks.push(list)
-  arrayEmpity = arrayBookmarks.filter((e) => e.bookmark == true)
-  return arrayEmpity
+const unCheckBookmaks = (catalog: catalogInterface): string[] => {
+  let filtering: string[] = []
+  filtering = arrayBookmarks.value.map((e) => {
+    if (e.id == catalog.id) {
+      e.bookmark = !e.bookmark
+    }
+    return e
+  })
+  arrayBookmarks.value = filtering
+  return arrayBookmarks
 }
-let filterTopicsSelected: string[] = []
-let teste: any[] = []
 
 const selectTopics = (topic: string): string[] => {
-  if (filterTopicsSelected.length == 0) teste.push(topic)
-  if (filterTopicsSelected.some((e) => e == topic))
-    teste = filterTopicsSelected.filter((e) => e != topic)
-  if (filterTopicsSelected.length == 0) filterTopicsSelected.push(topic)
-  if (!filterTopicsSelected.some((e) => e == topic)) filterTopicsSelected.push(topic)
-
-  if (teste.length == 0) filterTopicsSelected = teste
-  console.log(filterTopicsSelected)
-
+  if (filterTopicsSelected.value.length == 0) filterTopicsSelected.value.push(topic)
+  if (!filterTopicsSelected.value.some((e) => e == topic)) filterTopicsSelected.value.push(topic)
   return filterTopicsSelected
 }
 
-const sortByStarsAsc = () => {
-  if (props.list.length == 0) return
-  props.list.sort((a, b) => a.stars + b.stars)
-  console.log(props.list)
+const unSelectTopics = (topic: string): string[] => {
+  let filtering: string[] = []
+  filtering = filterTopicsSelected.value.filter((e) => e != topic)
+  filterTopicsSelected.value = filtering
+  return filterTopicsSelected
 }
 
-const sortByStarsDesc = () => {
-  if (props.list.length == 0) return
-  props.list.sort((a, b) => a.stars - b.stars)
-  console.log(props.list)
+const filterTopics = (list: catalogInterface[], topic: string): catalogInterface[] => {
+  console.log(orderDesc.value)
+  return list.filter((e) => e.topic == topic)
 }
+
+// const sortByStarsAsc = () => {
+//   if (arrayList.length == 0) return
+//   arrayList.sort((a, b) => a.stars + b.stars)
+//   console.log(arrayList)
+// }
 </script>
 
 <template>
@@ -54,9 +77,10 @@ const sortByStarsDesc = () => {
     <div class="container">
       <div>
         <h1>Bookmarks</h1>
+        <v-icon icon="mdi-star-outline" />
       </div>
       <div class="catalogRow">
-        <div v-for="(item, index) in arrayBookmarks" :key="index">
+        <div v-for="(item, index) in arrayBookmarks" :key="index" @click="unCheckBookmaks(item)">
           <div class="space">
             <v-hover v-slot="{ isHovering, props }" :open-delay="dlay" v-if="item.bookmark">
               <v-card
@@ -64,7 +88,7 @@ const sortByStarsDesc = () => {
                 :class="{ 'on-hover': isHovering }"
                 class="mx-auto"
                 height="150"
-                width="150"
+                width="250"
                 :color="'#A1A1A4'"
                 v-bind="props"
               >
@@ -78,22 +102,28 @@ const sortByStarsDesc = () => {
       </div>
     </div>
     <div class="chip">
-      <div v-for="(item, index) in props.msg" :key="index" @click="selectTopics(item)">
+      <div v-for="(item, index) in chipTopics" :key="index">
         <div>
-          <v-chip variant="elevated" v-if="filterTopicsSelected.find((e) => e == item)">
+          <v-chip
+            variant="elevated"
+            v-if="filterTopicsSelected.includes(item)"
+            @click="unSelectTopics(item)"
+          >
             {{ item }}
           </v-chip>
-          <v-chip v-esle> {{ item }} </v-chip>
+          <v-chip v-if="!filterTopicsSelected.includes(item)" @click="selectTopics(item)">
+            {{ item }}
+          </v-chip>
         </div>
       </div>
     </div>
 
-    <div v-for="(topic, index) in props.msg" :key="index">
+    <div v-for="(topic, index) in arrayTopics" :key="index">
       <div>
         <h1>{{ topic }}</h1>
       </div>
       <div class="catalogRow">
-        <div v-for="(item, index) in filter(props.list, topic)" :key="index">
+        <div v-for="(item, index) in filterTopics(arrayList, topic)" :key="index">
           <div class="space" @click="checkBookmaks(item)">
             <v-hover v-slot="{ isHovering, props }" :open-delay="dlay">
               <v-card
@@ -101,7 +131,7 @@ const sortByStarsDesc = () => {
                 :class="{ 'on-hover': isHovering }"
                 class="mx-auto"
                 height="150"
-                width="150"
+                width="250"
                 :color="'#A1A1A4'"
                 v-bind="props"
               >
@@ -125,6 +155,7 @@ const sortByStarsDesc = () => {
 .container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 }
 .sizeGray {
   width: 10rem;

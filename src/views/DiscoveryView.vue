@@ -18,7 +18,6 @@ let catalogModel: catalogInterface = {
 let arrayFilter: catalogInterface[] = reactive([catalogModel])
 onBeforeMount(() => {
   if (arrayFilter.find((e) => e.id == 0)) arrayFilter = listTask
-  console.log({ arrayFilter })
   listOfTopics()
 })
 onMounted(() => {})
@@ -32,15 +31,6 @@ const updateList = (): catalogInterface[] => {
     stars: 0
   }
   arrayFilter.push(catalog)
-  return arrayFilter
-}
-
-const filterTopic = (): catalogInterface[] => {
-  if (listTask.length == 0) return []
-  arrayFilter = listTask.filter((e) => {
-    if (e.topic == 'Javascript') return e
-  })
-  console.log(arrayFilter)
   return arrayFilter
 }
 
@@ -59,13 +49,7 @@ const listOfTopics = (): string[] => {
       <NavBarComponent :value="1" />
     </div>
     <div>
-      <v-text-field v-model="catalogModel.title" label="Name Task"></v-text-field>
-      <v-btn @click="filterTopic()">sort topic</v-btn>      
-      <v-btn v-if="edit">Editar</v-btn>
-      <v-btn v-else @click="updateList()">Save</v-btn>
-    </div>
-    <div>
-      <HelloWorld :msg="listTopic" :list="arrayFilter" />
+      <HelloWorld :topics="listTopic" :list="arrayFilter" />
     </div>
   </div>
 </template>
