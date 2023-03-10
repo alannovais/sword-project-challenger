@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { catalogInterface } from '@/interfaces/catalog'
-import { computed, ref, type Ref } from 'vue'
+import BookmarksComponent from './BookmarksComponent.vue';
+import { computed, ref } from 'vue'
 
 let props = defineProps<{
   topics: string[]
@@ -11,6 +12,7 @@ let arrayEmpity: catalogInterface[] = []
 let arrayBookmarks: catalogInterface[] = ref([])
 let filterTopicsSelected: string[] = ref([])
 let orderDesc: boolean = ref(false)
+let SortBy: String[] = ['Sort by stars']
 
 const arrayList = computed(() => {
   return props.list
@@ -61,45 +63,39 @@ const unSelectTopics = (topic: string): string[] => {
 }
 
 const filterTopics = (list: catalogInterface[], topic: string): catalogInterface[] => {
-  console.log(orderDesc.value)
-  return list.filter((e) => e.topic == topic)
+  let array: catalogInterface[] = []
+  array = list.filter((e) => e.topic == topic)
+  if (orderDesc.value) return array.sort((e, l) => e.stars - l.stars)
+  if (!orderDesc.value) return array.sort((e, l) => e.stars + l.stars)
+  return array
 }
-
-// const sortByStarsAsc = () => {
-//   if (arrayList.length == 0) return
-//   arrayList.sort((a, b) => a.stars + b.stars)
-//   console.log(arrayList)
-// }
+const ordenationBy = computed(() => {
+  let arrayOrderSettings: object[] = []
+  chipTopics.value.forEach((e) => {
+    arrayOrderSettings.push({
+      name: e,
+      orderStar: false
+    })
+  })
+  return arrayOrderSettings
+})
+const orderBy = (type: any, index: number) => {
+  console.log(ordenationBy)
+  ordenationBy.value.map((e, indexOrder) => {
+    if (index === indexOrder) {
+      let bool = !e.orderStar ? true : false
+      e.orderStar = bool
+    }
+    return e
+  })
+  orderDesc.value = !orderDesc.value ? true : false
+}
 </script>
 
 <template>
   <div class="displayView">
     <div class="container">
-      <div>
-        <h1>Bookmarks</h1>
-        <v-icon icon="mdi-star-outline" />
-      </div>
-      <div class="catalogRow">
-        <div v-for="(item, index) in arrayBookmarks" :key="index" @click="unCheckBookmaks(item)">
-          <div class="space">
-            <v-hover v-slot="{ isHovering, props }" :open-delay="dlay" v-if="item.bookmark">
-              <v-card
-                :elevation="isHovering ? 16 : 2"
-                :class="{ 'on-hover': isHovering }"
-                class="mx-auto"
-                height="150"
-                width="250"
-                :color="'#A1A1A4'"
-                v-bind="props"
-              >
-                <v-card-text class="font-weight-medium mt-12 text-center text-subtitle-1">
-                  {{ item.title }}
-                </v-card-text>
-              </v-card>
-            </v-hover>
-          </div>
-        </div>
-      </div>
+      <BookmarksComponent />
     </div>
     <div class="chip">
       <div v-for="(item, index) in chipTopics" :key="index">
@@ -119,8 +115,21 @@ const filterTopics = (list: catalogInterface[], topic: string): catalogInterface
     </div>
 
     <div v-for="(topic, index) in arrayTopics" :key="index">
-      <div>
+      <div style="display: flex; flex-direction: row">
         <h1>{{ topic }}</h1>
+        <div style="position: relative; left: 0.1rem; top: 0.8rem">
+          <v-menu transition="slide-x-transition">
+            <template v-slot:activator="{ props }">
+              <v-icon icon="mdi-menu-down" v-bind="props" />
+            </template>
+
+            <v-list>
+              <v-list-item v-for="(item, i) in SortBy" :key="i">
+                <v-list-item-title @click="orderBy(i, index)">{{ item }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
       </div>
       <div class="catalogRow">
         <div v-for="(item, index) in filterTopics(arrayList, topic)" :key="index">
@@ -135,8 +144,17 @@ const filterTopics = (list: catalogInterface[], topic: string): catalogInterface
                 :color="'#A1A1A4'"
                 v-bind="props"
               >
+                <v-card-title>
+                  <div style="float: right">
+                    <v-icon icon="mdi-star-outline" />
+                  </div>
+                </v-card-title>
                 <v-card-text class="font-weight-medium mt-12 text-center text-subtitle-1">
-                  {{ item.title }}
+                  <div style="position: relative; top: -1.5rem">
+                    <div>
+                      {{ item.title }}
+                    </div>
+                  </div>
                 </v-card-text>
               </v-card>
             </v-hover>

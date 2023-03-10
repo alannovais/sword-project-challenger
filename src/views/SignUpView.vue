@@ -58,7 +58,7 @@ function closeDialog(emit: any): void {
 <template>
   <NavBarComponent :value="2" />
   <main>
-    <div style="width: 40rem; position: relative; left: -12rem; z-index: 9999">
+    <div style="width: 40rem;">
       <form @keyup.enter="register(user)">
         <v-text-field v-model="user.login" variant="outlined" label="Username *" required />
         <v-text-field

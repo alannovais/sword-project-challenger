@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref, reactive, onMounted, onBeforeMount } from 'vue'
-import HelloWorld from '../components/HelloWorld.vue'
 import type { catalogInterface } from '@/interfaces/catalog'
+import DiscoveryComponent from '../components/DiscoveryComponent.vue'
 import NavBarComponent from '@/components/NavBarComponent.vue'
 import json from '@/mock/catalogMoc.json'
 
@@ -49,7 +49,7 @@ const listOfTopics = (): string[] => {
       <NavBarComponent :value="1" />
     </div>
     <div>
-      <HelloWorld :topics="listTopic" :list="arrayFilter" />
+      <DiscoveryComponent :topics="listTopic" :list="arrayFilter" />
     </div>
   </div>
 </template>
