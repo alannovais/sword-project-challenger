@@ -57,8 +57,7 @@ function closeDialog(emit: any): void {
 
 <template>
   <NavBarComponent :value="2" />
-  <main>
-    <div style="width: 40rem;">
+    <div style="display: flex; justify-content: center; align-items: center">
       <form @keyup.enter="register(user)">
         <v-text-field v-model="user.login" variant="outlined" label="Username *" required />
         <v-text-field
@@ -75,18 +74,21 @@ function closeDialog(emit: any): void {
         </v-btn>
       </form>
     </div>
-    <AlertOptionsComponent
-      :set-dialog="openDialog"
-      :set-title="titleDialog"
-      :set-msg="msgDialog"
-      :set-btn-one="btOneDialog"
-      @onCloseDialog="closeDialog"
-    />
-  </main>
+  <AlertOptionsComponent
+    :set-dialog="openDialog"
+    :set-title="titleDialog"
+    :set-msg="msgDialog"
+    :set-btn-one="btOneDialog"
+    @onCloseDialog="closeDialog"
+  />
 </template>
 
 <style>
 #app {
-    display: flex;
+  display: flex;
+}
+
+.v-application__wrap {
+  min-height: 0;
 }
 </style>

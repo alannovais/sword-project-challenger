@@ -66,7 +66,8 @@ function closeDialog(emit: any): void {
 </script>
 
 <template>
-  <main class="container">
+  <div class="space">&nbsp;</div>
+  <div class="container">
     <form @keyup.enter="singUp(user)">
       <v-text-field v-model="user.login" variant="outlined" label="Username" />
       <v-text-field
@@ -88,19 +89,18 @@ function closeDialog(emit: any): void {
       :set-btn-one="btOneDialog"
       @onCloseDialog="closeDialog"
     />
-  </main>
+  </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  #app {
-      display: flex;
-  }
+<style scoped>
+.space {
+  min-height: 10rem;
 }
 .container {
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 a {
   text-decoration: underline;

@@ -15,12 +15,17 @@ const logout = () => {
   let arrayToUpdate: userInterface[] = []
   let newArray: userInterface[] = []
   arrayToUpdate = JSON.parse(localStorage.getItem('user'))
+  if (arrayToUpdate == null) return router.push({ path: '/' })
   arrayToUpdate.forEach((element) => {
-    if (element.active == true)  element.active = !element.active
+    if (element.active == true) element.active = !element.active
     newArray.push(element)
   })
   localStorage.setItem('user', JSON.stringify(newArray))
   return router.push({ path: '/' })
+}
+
+const username = () => {
+  return router.push({ path: '/signup' })
 }
 </script>
 
@@ -38,7 +43,7 @@ const logout = () => {
           "
         >
           <div>
-            <v-btn> LOGO </v-btn>
+            <v-btn @click="logout"> LOGO </v-btn>
           </div>
           <div>
             <v-btn> Discovery </v-btn>
@@ -47,7 +52,7 @@ const logout = () => {
           <div>&nbsp;</div>
           <div>&nbsp;</div>
           <div>
-            <v-btn> Username </v-btn>
+            <v-btn @click="username"> Username </v-btn>
           </div>
 
           <div>
@@ -70,8 +75,7 @@ const logout = () => {
 .colorNavBar {
   background-color: #a1a1a4;
 }
-
 .v-application__wrap {
-  min-height: 6rem;
+  min-height: 8vh;
 }
 </style>
