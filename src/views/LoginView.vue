@@ -31,7 +31,7 @@ onMounted(() => {
 
 const singUp = (param: userInterface): any => {
   let checkAnyTrue = false
-  if (param.login.length == 0 || param.password.length == 0) return (openDialog.value = true)
+  if (param.login.trim.length == 0 || param.password.trim.length == 0) return (openDialog.value = true)
   if (userMock.length > 0) {
     let updateLocalStorage: userInterface[] = []
     userMock.forEach((element) => {
