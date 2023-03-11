@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
-import { onBeforeMount, onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, type Ref } from 'vue'
 import type { userInterface } from '../interfaces/user'
 import AlertOptionsComponent from '@/components/AlertOptionsComponent.vue'
 
@@ -18,18 +18,12 @@ let userMock: userInterface[] = [
   }
 ]
 
-let openDialog: boolean = ref(false)
-let titleDialog: string = 'Login failed!'
-let msgDialog: string =
-  'User or Password can not be find in our database, please, check your data again'
-let btOneDialog: string = 'Okay'
-
-// onBeforeMount(() => {
-//   localStorage.setItem(
-//     'user',
-//     JSON.stringify([{ login: 'sword', password: '1234', active: false }])
-//   )
-// })
+let openDialog: Ref<boolean> = ref(false)
+let dialog = {
+  titleDialog: 'Login failed!',
+  msgDialog: 'User or Password can not be find in our database, please, check your data again',
+  btOneDialog: 'Okay'
+}
 
 onMounted(() => {
   userMock = localStorage.getItem('user') != null && JSON.parse(localStorage.getItem('user'))
@@ -37,8 +31,7 @@ onMounted(() => {
 
 const singUp = (param: userInterface): any => {
   let checkAnyTrue = false
-  if (param.login.length == 0) return
-  if (param.password.length == 0) return
+  if (param.login.length == 0 || param.password.length == 0) return (openDialog.value = true)
   if (userMock.length > 0) {
     let updateLocalStorage: userInterface[] = []
     userMock.forEach((element) => {
@@ -84,9 +77,7 @@ function closeDialog(emit: any): void {
     <p>Don't have a account? <a @click="signUp"> Click here to Sign up.</a></p>
     <AlertOptionsComponent
       :set-dialog="openDialog"
-      :set-title="titleDialog"
-      :set-msg="msgDialog"
-      :set-btn-one="btOneDialog"
+      :dialogArray="dialog"
       @onCloseDialog="closeDialog"
     />
   </div>

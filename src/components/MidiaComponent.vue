@@ -11,9 +11,6 @@ const props = defineProps<{
 
 const emit2 = defineEmits(['checkBookmaks'])
 
-const arrayTopicComponent = computed(() => {
-  return props.arrayTopics
-})
 const arrayListComponent = computed(() => {
   return props.arrayList
 })
@@ -38,7 +35,7 @@ const checkBookmaks = (emit: any) => {
 
 let groupedArray = ref([])
 
-function groupBy(array, key) {
+const groupBy = (array, key) => {
   return array.reduce((hash, obj) => {
     if (obj[key] === undefined) return hash
     return Object.assign(hash, { [obj[key]]: (hash[obj[key]] || []).concat(obj) })
@@ -49,8 +46,8 @@ onMounted(() => {
   groupedArray.value = groupBy(arrayListComponent.value, 'topic')
 })
 
-function showChip(topic: string): boolean {
-  if(filtredChip.value.length == 0) return true
+const showChip = (topic: string): boolean => {
+  if (filtredChip.value.length == 0) return true
   return filtredChip.value.some((e: string) => e != topic)
 }
 </script>
@@ -78,10 +75,5 @@ function showChip(topic: string): boolean {
 .midiaClassRow {
   display: flex;
   flex-direction: row;
-}
-
-.spaceCards {
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 </style>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref, type Ref, reactive, onMounted, onBeforeMount } from 'vue'
+import { reactive, onBeforeMount } from 'vue'
 import type { catalogInterface } from '@/interfaces/catalog'
 import DiscoveryComponent from '../components/DiscoveryComponent.vue'
 import NavBarComponent from '@/components/NavBarComponent.vue'
 import json from '@/mock/catalogMoc.json'
 
-let edit: Ref<boolean> = ref(false)
 let listTask = json.data
 let listTopic: string[] = reactive([])
 let catalogModel: catalogInterface = {
@@ -16,23 +15,11 @@ let catalogModel: catalogInterface = {
   stars: 0
 }
 let arrayFilter: catalogInterface[] = reactive([catalogModel])
+
 onBeforeMount(() => {
   if (arrayFilter.find((e) => e.id == 0)) arrayFilter = listTask
   listOfTopics()
 })
-onMounted(() => {})
-
-const updateList = (): catalogInterface[] => {
-  let catalog: catalogInterface = {
-    id: arrayFilter.length + 1,
-    title: catalogModel.title,
-    bookmark: false,
-    topic: '',
-    stars: 0
-  }
-  arrayFilter.push(catalog)
-  return arrayFilter
-}
 
 const listOfTopics = (): string[] => {
   listTask.forEach((element) => {
@@ -58,9 +45,5 @@ const listOfTopics = (): string[] => {
 .container {
   display: flex;
   flex-direction: column;
-}
-.about {
-  display: flex;
-  flex-direction: row;
 }
 </style>

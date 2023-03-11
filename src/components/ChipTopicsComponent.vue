@@ -32,13 +32,14 @@ const unSelectTopics = (topic: string) => {
     <div v-for="(item, index) in chipTopicsComponent" :key="index" class="space">
       <v-chip
         variant="elevated"
+        color="#A1A1A4"
         v-if="filterTopicsSelected.includes(item)"
         @click="unSelectTopics(item)"
       >
         {{ item }}
       </v-chip>
-      <v-chip v-if="!filterTopicsSelected.includes(item)" @click="selectTopics(item)">
-        {{ item }}
+      <v-chip v-if="!filterTopicsSelected.includes(item)" @click="selectTopics(item)" color="#a1a1a4">
+        <span style="color: black">{{ item }}</span>
       </v-chip>
     </div>
   </div>

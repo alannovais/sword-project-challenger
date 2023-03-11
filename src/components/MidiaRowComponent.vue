@@ -50,7 +50,7 @@ const orderByDesc = () => {
             color="primary"
             v-bind="props"
             icon="mdi-menu-down"
-            :color="'gray'"
+            :color="'#A1A1A4'"
             class="colorPositionArrow"
           ></v-icon>
         </template>

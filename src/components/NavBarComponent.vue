@@ -73,7 +73,7 @@ const username = () => {
 }
 
 .colorNavBar {
-  background-color: #a1a1a4;
+  background-color: #A1A1A4;
 }
 .v-application__wrap {
   min-height: 8vh;
