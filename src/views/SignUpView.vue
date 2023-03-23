@@ -27,7 +27,7 @@ let dialogMiss = {
 }
 
 const register = (param: userInterface) => {
-  if (param.login.trim.length == 0 || param.password.trim.length == 0) return
+  if (param.login.trim().length == 0 || param.password.trim().length == 0) return
   let userLocalstorage: userInterface[] = []
   let arrayToUpdate: userInterface[] = []
   userLocalstorage = JSON.parse(localStorage.getItem('user'))
